@@ -11,11 +11,20 @@ npm install react-native-proto-serial
 ## Usage
 
 ```js
-import ProtoSerial from "react-native-proto-serial";
+const device = new SerialDevice();
+const deviceService = new DeviceService(
+    device,
+    new ProtoSerializer<MessageBase>(MessageBase.decode, MessageBase.encode)
+);
 
-// ...
+deviceService.request$<IAboutResponse>(
+                MessageBase.create({
+                    aboutRequest: {}
+                }),
+                (x) => x.aboutResponse
+            )
+            .subscribe((response) => console.log('response: ', response));
 
-const result = await ProtoSerial.multiply(3, 7);
 ```
 
 ## Contributing
